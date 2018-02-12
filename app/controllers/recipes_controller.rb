@@ -5,6 +5,12 @@ class RecipesController < ApplicationController
 	end
 
 	def show
+		@ingredient = Ingredient.all
+		 if params[:other_params].present?
+			i = params[:other_params]
+			@directions= Direction.where(ingredient_id: i)
+		end
+
 	end
 
 	def new 
@@ -36,13 +42,13 @@ class RecipesController < ApplicationController
 
 	def destroy
 		@recipe.destroy
-		redirect_to root_path, notice: "Successfully deleted gym exercise"
+		redirect_to root_path, notice: "Successfully deleted recipe"
 	end
 
 	private
 
 	def recipe_params
-		params.require(:recipe).permit(:title, :description, :image, ingredients_attributes: [:id, :name, :_destroy , directions_attributes: [:id, :name, :_destroy]])
+		params.require(:recipe).permit(:title, :description, :image, ingredients_attributes: [:id, :name, :_destroy, directions_attributes: [:id, :name, :_destroy]])
 	end
 
 	def find_recipe
@@ -50,5 +56,3 @@ class RecipesController < ApplicationController
 	end
 
 end
-
-
