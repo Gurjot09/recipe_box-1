@@ -6,10 +6,6 @@ class RecipesController < ApplicationController
 
 	def show
 		@ingredient = Ingredient.all
-		 if params[:other_params].present?
-			i = params[:other_params]
-			@directions= Direction.where(ingredient_id: i)
-		end
 
 	end
 
@@ -44,6 +40,15 @@ class RecipesController < ApplicationController
 		@recipe.destroy
 		redirect_to root_path, notice: "Successfully deleted recipe"
 	end
+
+	def getid
+		id =	params[:data_value]
+		@directions = Direction.where(ingredient_id: id)
+		respond_to do |format|
+		    format.js 
+		end	
+	end
+	
 
 	private
 
